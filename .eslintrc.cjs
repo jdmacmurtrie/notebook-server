@@ -4,10 +4,11 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    "next/core-web-vitals",
+    // "next/core-web-vitals",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:json/recommended",
+    // "plugin:json/recommended",
+    "plugin:react/recommended",
     "prettier",
   ],
   parser: "@typescript-eslint/parser",
