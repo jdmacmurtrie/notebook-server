@@ -1,10 +1,11 @@
 import './App.scss';
+import SidePanel from './components/SidePanel';
 import TextEditor from './components/TextEditor';
 
 function App() {
   return (
     <>
-      <div>What up</div>
+      <SidePanel />
       <TextEditor />
     </>
   );

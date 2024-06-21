@@ -1,0 +1,39 @@
+$dark-gray: #242424;
+
+.panel {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  transition: all 0.5s;
+
+  &-open {
+    width: 200px;
+    background-color: lightgray;
+
+    &-text {
+      opacity: 100;
+      color: $dark-gray;
+      margin: 20px;
+      text-wrap: nowrap;
+    }
+  }
+
+  &-closed {
+    background-color: $dark-gray;
+    width: 60px;
+
+    &-text {
+      opacity: 0;
+    }
+  }
+}
+
+.icon {
+  color: gray;
+  padding-right: 17px;
+  display: flex;
+  justify-content: flex-end;
+}
