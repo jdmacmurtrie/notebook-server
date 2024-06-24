@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import type { Editor as TinyMCEEditor } from 'tinymce';
 
@@ -11,7 +11,7 @@ const TextEditor = () => {
   };
 
   return (
-    <>
+    <div className="editor-wrapper">
       <Editor
         apiKey={import.meta.env.VITE_TINYMCE_KEY}
         onInit={(_evt, editor) => (editorRef.current = editor)}
@@ -49,7 +49,7 @@ const TextEditor = () => {
         }}
       />
       <button onClick={log}>Log editor content</button>
-    </>
+    </div>
   );
 };
 
