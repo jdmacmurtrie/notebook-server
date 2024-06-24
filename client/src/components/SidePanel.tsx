@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './SidePanel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +6,12 @@ import clsx from 'clsx';
 
 const SidePanel = () => {
   const [isOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    fetch('http://localhost:5001/ping')  // Replace this with the API endpoint you created
+      .then(response => response.text())
+      .then(data => console.log(data));
+  }, []);
 
   return (
     <div
