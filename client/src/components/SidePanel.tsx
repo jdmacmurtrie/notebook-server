@@ -8,7 +8,7 @@ const SidePanel = () => {
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5001/ping')  // Replace this with the API endpoint you created
+    fetch('http://localhost:5000/')  // Replace this with the API endpoint you created
       .then(response => response.text())
       .then(data => console.log(data));
   }, []);

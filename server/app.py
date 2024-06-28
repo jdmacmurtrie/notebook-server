@@ -1,15 +1,25 @@
 """ read from a SQLite database and return data """
 
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 import os.path
+from flask import Flask, jsonify
+from flask_sqlalchemy import SQLAlchemy
+import csv
+from sqlalchemy.sql import text
+from sqlalchemy.orm import DeclarativeBase
+from flask_cors import CORS
+
+# from example_data import db_load_example_data
+# from models.Page import Page
 
 # this variable, db, will be used for all SQLAlchemy commands
 db = SQLAlchemy()
 # create the app
 app = Flask(__name__)
+
+CORS(app, resources={r'/*': {'origins': '*'}})
+
 # change string to the name of your database; add path if necessary
-db_name = 'sockmarket.db'
+db_name = 'notebook.db'
 # note - path is necessary for a SQLite db!!!
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, db_name)
@@ -22,46 +32,50 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 
 
-# each table in the database needs a class to be created for it
-# this class is named Sock because the database contains info about socks
-# and the table in the database is named: socks
-# db.Model is required - don't change it
-# identify all columns by name and their data type
-class Sock(db.Model):
-    __tablename__ = 'socks'
+class Base(DeclarativeBase):
+    pass
+
+class Page(db.Model):
+
+    __tablename__ = 'Pages'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    style = db.Column(db.String)
-    color = db.Column(db.String)
-    quantity = db.Column(db.Integer)
-    price = db.Column(db.Float)
-    updated = db.Column(db.String)
+    title = db.Column(db.String(80), nullable=False)
+    body = db.Column(nullable=False)
 
-# NOTHING BELOW THIS LINE NEEDS TO CHANGE
-# this route will test the database connection - and nothing more
+# def db_load_example_data():
+#     filename = 'initial_data.csv'
+
+#     with open(filename, 'r') as csvfile:
+#         datareader = csv.reader(csvfile)
+#         for row in datareader:
+#             [_, title, body] = row
+#             new_page = Page(title=title, body=body)
+
+#             with app.app_context():
+#                 db.session.add(new_page)
+#                 db.session.commit()
+
 @app.route('/')
-def index():
+def testdb():
     try:
-        socks = db.session.execute(db.select(Sock)
-            .filter_by(style='knee-high')
-            .order_by(Sock.name)).scalars()
+        pages = db.session.execute(db.select(Page)).scalars().all()
+        print(pages)
+        response = []
 
-        sock_text = '<ul>'
-        for sock in socks:
-            sock_text += '<li>' + sock.name + ', ' + sock.color + '</li>'
-        sock_text += '</ul>'
-        return sock_text
+        for page in pages:
+            obj = {
+                'title': page.title,
+                'body': page.body,
+            }
+            response.append(obj)
+
+        return response
+
     except Exception as e:
         # e holds description of the error
         error_text = "<p>The error:<br>" + str(e) + "</p>"
         hed = '<h1>Something is broken.</h1>'
         return hed + error_text
 
-
-# sanity check route
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('pong!')
-
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
