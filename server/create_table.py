@@ -1,8 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 import csv
-from app import Page, app
 import os.path
 from flask import Flask, jsonify
+from app import app
 
 db = SQLAlchemy()
 app = Flask(__name__)

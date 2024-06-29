@@ -4,13 +4,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
 
+interface Page {
+  title: string;
+  body: string;
+  id: number;
+}
+
 const SidePanel = () => {
   const [isOpen, setOpen] = useState(false);
+  const [pages, setPages] = useState<Page[]>([])
 
   useEffect(() => {
-    fetch('http://localhost:5000/')  // Replace this with the API endpoint you created
-      .then(response => response.text())
-      .then(data => console.log(data));
+    fetch('http://localhost:5000/')
+      .then(response => {
+        console.log(response);
+        return response.text()
+      })
+      .then(response => console.log(response))
+      // .then(data => setPages(data));
   }, []);
 
   return (
