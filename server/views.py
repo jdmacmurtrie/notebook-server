@@ -1,5 +1,6 @@
-from server.app import app, db
 from models.page import Page
+from application import app
+from db import db
 
 @app.route('/')
 def get_pages():
