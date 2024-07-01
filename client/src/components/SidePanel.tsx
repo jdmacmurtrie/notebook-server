@@ -15,14 +15,12 @@ const SidePanel = () => {
   const [pages, setPages] = useState<Page[]>([])
 
   useEffect(() => {
-    fetch('http://localhost:5000/')
-      .then(response => {
-        console.log(response);
-        return response.text()
-      })
-      .then(response => console.log(response))
-      // .then(data => setPages(data));
-  }, []);
+    if (isOpen) {
+      fetch('http://localhost:5000/get_pages')
+        .then(response => response.json())
+        .then(data => setPages(data))
+    }
+  }, [isOpen]);
 
   return (
     <div
@@ -39,7 +37,9 @@ const SidePanel = () => {
         />
       </div>
       <div className={isOpen ? 'panel-open-text' : 'panel-closed-text'}>
-        here is some text
+        {pages.map(page => <div key={page.id}>
+          {page.title}
+        </div>)}
       </div>
     </div>
   );

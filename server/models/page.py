@@ -1,4 +1,4 @@
-from db import db
+from application import db
 
 class Page(db.Model):
     __tablename__ = 'Pages'

@@ -1,4 +1,4 @@
-import views
+import routes
 from application import app
 from flask_cors import CORS
 

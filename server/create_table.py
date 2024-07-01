@@ -1,26 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
 import csv
-import os.path
-from flask import Flask, jsonify
-from app import app
-
-db = SQLAlchemy()
-app = Flask(__name__)
-# change string to the name of your database; add path if necessary
-db_name = 'notebook.db'
-# note - path is necessary for a SQLite db!!!
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.join(BASE_DIR, db_name)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
-
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-
-
+from application import app, db
+from models.page import Page
 
 # initialize the app with Flask-SQLAlchemy
 db.init_app(app)
-
 
 engine = db.create_engine('sqlite:///notebook.db', echo=True)
 
