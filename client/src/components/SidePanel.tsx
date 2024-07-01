@@ -37,7 +37,7 @@ const SidePanel = () => {
         />
       </div>
       <div className={isOpen ? 'panel-open-text' : 'panel-closed-text'}>
-        {pages.map(page => <div key={page.id}>
+        {pages.map(page => <div key={page.id} className='panel-list-item'>
           {page.title}
         </div>)}
       </div>
