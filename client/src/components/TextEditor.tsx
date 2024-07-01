@@ -1,10 +1,21 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import type { Editor as TinyMCEEditor } from 'tinymce';
+import { RootState } from '../store';
 
 const TextEditor = () => {
+  const currentPage = useSelector((state: RootState) => state.page.currentPage)
+
   const [title, setTitle] = useState('Title')
   const editorRef = useRef<TinyMCEEditor | null>(null);
+
+  useEffect(() => {
+    if (currentPage?.title !== title) {
+      setTitle(currentPage?.title || "")
+    }
+  })
+
   const handleSubmit = () => {
     if (editorRef.current) {
       fetch('http://localhost:5000/add_page',
@@ -28,7 +39,7 @@ const TextEditor = () => {
         <Editor
           apiKey={import.meta.env.VITE_TINYMCE_KEY}
           onInit={(_evt, editor) => (editorRef.current = editor)}
-          initialValue="<p>This is the initial content of the editor.</p>"
+          initialValue={currentPage?.body || ""}
           init={{
             height: 500,
             menubar: false,

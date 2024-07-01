@@ -27,13 +27,14 @@ $dark-gray: #242424;
     width: 60px;
 
     &-text {
-      opacity: 0;
+      display: none;
     }
   }
 
   &-list-item {
     margin-bottom: 10px;
     font-weight: bold;
+    cursor: pointer;
   }
 }
 

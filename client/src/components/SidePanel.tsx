@@ -6,7 +6,8 @@ import clsx from 'clsx';
 import { RootState } from '../store';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setPageList } from '../pageSlice';
+import { setCurrentPage, setPageList } from '../pageSlice';
+import { Page } from '../types';
 
 const SidePanel = () => {
   const pages = useSelector((state: RootState) => state.page.pages)
@@ -21,6 +22,11 @@ const SidePanel = () => {
         .then(data => dispatch(setPageList(data)))
     }
   }, [isOpen]);
+
+  const handlePageSelect = (pageId: Page['id']) => {
+    dispatch(setCurrentPage(pageId))
+    setOpen(false)
+  }
 
   return (
     <div
@@ -37,7 +43,11 @@ const SidePanel = () => {
         />
       </div>
       <div className={isOpen ? 'panel-open-text' : 'panel-closed-text'}>
-        {pages.map(page => <div key={page.id} className='panel-list-item'>
+        {pages.map(page => <div
+          key={page.id}
+          className='panel-list-item'
+          onClick={() => handlePageSelect(page.id)}
+        >
           {page.title}
         </div>)}
       </div>
