@@ -3,22 +3,22 @@ import './SidePanel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
-
-interface Page {
-  title: string;
-  body: string;
-  id: number;
-}
+import { RootState } from '../store';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setPageList } from '../pageSlice';
 
 const SidePanel = () => {
+  const pages = useSelector((state: RootState) => state.page.pages)
+  const dispatch = useDispatch()
+
   const [isOpen, setOpen] = useState(false);
-  const [pages, setPages] = useState<Page[]>([])
 
   useEffect(() => {
     if (isOpen) {
       fetch('http://localhost:5000/get_pages')
         .then(response => response.json())
-        .then(data => setPages(data))
+        .then(data => dispatch(setPageList(data)))
     }
   }, [isOpen]);
 

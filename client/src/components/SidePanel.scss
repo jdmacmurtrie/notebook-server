@@ -42,5 +42,8 @@ $dark-gray: #242424;
   padding-right: 17px;
   display: flex;
   justify-content: flex-end;
-  cursor: pointer;
+
+  & svg {
+    cursor: pointer;
+  }
 }
