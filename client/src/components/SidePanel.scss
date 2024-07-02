@@ -32,13 +32,16 @@ $dark-gray: #242424;
   }
 
   &-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
     font-weight: bold;
     cursor: pointer;
   }
 }
 
-.icon {
+.icon-bars {
   color: gray;
   padding-right: 17px;
   display: flex;
@@ -47,4 +50,8 @@ $dark-gray: #242424;
   & svg {
     cursor: pointer;
   }
+}
+
+.icon-x {
+  margin-left: 5px;
 }

@@ -2,33 +2,29 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import type { Editor as TinyMCEEditor } from 'tinymce';
-import { RootState } from '../store';
+import { AppDispatch, RootState } from '../store';
+import { addNewPage } from '../pageSlice';
+import { useDispatch } from 'react-redux';
 
 const TextEditor = () => {
   const currentPage = useSelector((state: RootState) => state.page.currentPage)
+  const dispatch = useDispatch<AppDispatch>()
 
   const [title, setTitle] = useState('Title')
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
   useEffect(() => {
-    if (currentPage?.title !== title) {
-      setTitle(currentPage?.title || "")
+    if (currentPage) {
+      setTitle(currentPage?.title)
     }
   })
 
   const handleSubmit = () => {
     if (editorRef.current) {
-      fetch('http://localhost:5000/add_page',
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: 'POST',
-          body: JSON.stringify({
-            title,
-            body: editorRef.current.getContent()
-          })
-        })
+      dispatch(addNewPage({
+        title,
+        body: editorRef.current.getContent()
+      }))
     }
   };
 

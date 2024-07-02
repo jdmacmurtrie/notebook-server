@@ -27,3 +27,13 @@ def add_page():
     db.session.commit()
 
     return { 'status': 200 }
+
+@app.route('/delete_page', methods=['DELETE'])
+def delete_page():
+    data = request.get_json()
+    page = db.session.query(Page).filter_by(id=data['id']).first()
+
+    db.session.delete(page)
+    db.session.commit()
+
+    return { 'status': 200, 'id': data['id'] }
