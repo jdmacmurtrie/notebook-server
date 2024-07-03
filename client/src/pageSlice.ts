@@ -28,6 +28,14 @@ export const addNewPage = createAsyncThunk('addNewPage',
     return jsonData;
   })
 
+export const updatePage = createAsyncThunk('updatePage',
+  async (body: { title: string, body: string, id: number }) => {
+    const response = await fetchAPI({ url: '/update_page', method: 'PUT', body })
+    const jsonData = await response.json();
+
+    return jsonData;
+  })
+
 export const deletePage = createAsyncThunk('deletePage',
   async (body: { id: number }) => {
     const response = await fetchAPI({ url: '/delete_page', method: 'DELETE', body })
@@ -47,10 +55,16 @@ export const pageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPages.fulfilled, (state, action) => {
-        state.pages = state.pages.concat(action.payload);
+        state.pages = action.payload;
       })
-      .addCase(addNewPage.fulfilled, (state, action) => {
-        state.pages.push(action.payload)
+      .addCase(updatePage.fulfilled, (state, action) => {
+        const { id, title, body } = action.payload.updated_page;
+
+        const oldPageIndex = state.pages.findIndex((page) => page.id === id)
+        const newState = { ...state.pages }
+        newState.splice(oldPageIndex, 1, { id, title, body })
+
+        state.pages = newState
       })
       .addCase(deletePage.fulfilled, (state, action) => {
         state.pages = state.pages.filter(page => page.id !== action.payload.id)

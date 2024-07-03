@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import type { Editor as TinyMCEEditor } from 'tinymce';
 import { AppDispatch, RootState } from '../store';
-import { addNewPage } from '../pageSlice';
+import { addNewPage, updatePage } from '../pageSlice';
 import { useDispatch } from 'react-redux';
 
 const TextEditor = () => {
@@ -20,10 +20,18 @@ const TextEditor = () => {
   })
 
   const handleSubmit = () => {
-    if (editorRef.current) {
+    if (currentPage) {
+      dispatch(updatePage({
+        title,
+        // handleSubmit is only enabled if !!editorRef.current
+        // fallback is to satisfy TS
+        body: editorRef.current?.getContent() || '',
+        id: currentPage.id
+      }))
+    } else {
       dispatch(addNewPage({
         title,
-        body: editorRef.current.getContent()
+        body: editorRef.current?.getContent() || '',
       }))
     }
   };
@@ -68,7 +76,7 @@ const TextEditor = () => {
               'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
           }}
         />
-        <button onClick={handleSubmit}>Submit</button>
+        <button disabled={!editorRef.current} onClick={handleSubmit}>Submit</button>
       </div>
     </>
   );

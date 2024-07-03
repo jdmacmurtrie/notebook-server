@@ -26,7 +26,19 @@ def add_page():
     db.session.add(new_page)
     db.session.commit()
 
-    return { 'status': 200 }
+    return { 'status': 200, "new_page": {'title': new_page.title, 'body': new_page.body, 'id': new_page.id}  }
+
+@app.route('/update_page', methods=['PUT'])
+def update_page():
+    data = request.get_json()
+    page = db.session.query(Page).filter_by(id=data['id']).first()
+    page.title = data['title']
+    page.body = data['body']
+
+    db.session.commit()
+
+    return { 'status': 200, "updated_page": { 'title': data['title'], 'body': data['body'], 'id': data['id'] }}
+
 
 @app.route('/delete_page', methods=['DELETE'])
 def delete_page():
